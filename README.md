@@ -30,6 +30,35 @@ The goal is not only to compile a program, but also to internalize how CMake int
 
 ## Tasks
 
+### 0. Install CMake
+
+Before starting, ensure that CMake is installed on your Linux system. On Ubuntu/Debian-based distributions, use the package manager:
+
+```bash
+sudo apt update
+sudo apt install cmake
+```
+
+Verify the installation by checking the CMake version:
+
+```bash
+cmake --version
+```
+
+You should see output similar to:
+```
+cmake version 3.16.3
+CMake suite maintained and supported by Kitware (kitware.com/cmake).
+```
+
+**Note**: This tutorial requires CMake 3.10 or later (as specified in our `CMakeLists.txt`). Most modern Linux distributions provide a compatible version through their package managers. If you need a newer version than what's available in your distribution's repositories, you can download it directly from the [CMake website](https://cmake.org/download/) or use alternative installation methods like `snap install cmake --classic`.
+
+You'll also need a C++ compiler. On most Linux systems, this is already installed, but you can ensure it's available with:
+
+```bash
+sudo apt install build-essential
+```
+
 ### 1. Create a project directory
 
 Open a terminal and create a clean workspace:
@@ -164,7 +193,58 @@ You will see:
 
 ---
 
+## Questions
+
+Test your comprehension of the CMake workflow with these questions:
+
+**1. What would happen if you ran `cmake --build ./build/` before running `cmake -B build`?**
+
+<details>
+<summary>Click to reveal answer</summary>
+
+The build command would fail because the build directory and its generated files (like the Makefile) don't exist yet. CMake needs to configure the project first to create the build system files before it can invoke the build process.
+
+</details>
+
+**2. Why do we put the C++ source file in a `src/` subdirectory instead of directly in the project root?**
+
+<details>
+<summary>Click to reveal answer</summary>
+
+Using a `src/` directory follows standard project organization conventions and separates source code from configuration files (like CMakeLists.txt), documentation, and build artifacts. This structure scales well as projects grow and makes the project more maintainable and professional.
+
+</details>
+
+**3. What is the difference between running `make` directly in the build directory versus using `cmake --build ./build/`?**
+
+<details>
+<summary>Click to reveal answer</summary>
+
+Both commands achieve the same result in this Linux example, but `cmake --build` is platform-independent and works with any generator (Make, Ninja, Visual Studio, Xcode), while `make` only works when CMake generates Makefiles. Using `cmake --build` makes your workflow portable across different operating systems and build tools.
+
+</details>
+
+**4. If you wanted to completely start over with a clean build, what would be the most efficient approach?**
+
+<details>
+<summary>Click to reveal answer</summary>
+
+Delete the entire build directory (`rm -rf build/`) and then reconfigure (`cmake -B build`). This removes all cached configuration, generated files, and compiled objects, ensuring a completely fresh build without affecting your source code.
+
+</details>
+
+**5. What does the `add_executable(singlefile src/main.cpp)` line in CMakeLists.txt actually do?**
+
+<details>
+<summary>Click to reveal answer</summary>
+
+This line tells CMake to create a build target called "singlefile" that compiles the source file `src/main.cpp` into an executable. The first argument (`singlefile`) becomes the name of the resulting executable file, and the second argument specifies which source file(s) to compile.
+
+</details>
+
+---
+
 ## Advice
 
-When learning CMake, consistency and repetition are essential. Build the habit of separating source and build directories early, because larger projects will rely heavily on this structure for clarity and reproducibility. Always inspect your `CMakeLists.txt` after changes and rerun the configuration step to ensure that CMake properly regenerates the build system. If something does not compile as expected, remove your build directory and reconfigure from scratch—this often resolves stale state issues. As you proceed to more advanced sheets that introduce libraries, multiple targets, or testing frameworks, the workflow you practiced here will remain fundamentally the same. Think of this sheet as laying the groundwork for later exercises, such as *[placeholder-exercise-link]*, where project structure and target properties become more complex. Continue experimenting, adding small variations, and verifying how CMake reacts; the more you do this, the more natural the build process will feel.
+When learning CMake, consistency and repetition are essential. Build the habit of separating source and build directories early, because larger projects will rely heavily on this structure for clarity and reproducibility. Always inspect your `CMakeLists.txt` after changes and rerun the configuration step to ensure that CMake properly regenerates the build system. If something does not compile as expected, remove your build directory and reconfigure from scratch—this often resolves stale state issues. As you proceed to more advanced sheets that introduce libraries, multiple targets, or testing frameworks, the workflow you practiced here will remain fundamentally the same. Think of this sheet as laying the groundwork for later exercises where project structure and target properties become more complex. Continue experimenting, adding small variations, and verifying how CMake reacts; the more you do this, the more natural the build process will feel.
 
